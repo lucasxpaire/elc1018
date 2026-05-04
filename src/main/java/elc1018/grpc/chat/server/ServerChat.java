@@ -23,13 +23,22 @@ public class ServerChat {
         @Override
         public void register(User requisicao, StreamObserver<RegisterResponse> observadorResposta) {
             String nomeUsuario = requisicao.getUsername();
-            boolean sucesso = salaChat.registrarUsuario(nomeUsuario);
+            boolean sucesso;
+
+            if (nomeUsuario.equalsIgnoreCase("sistema")){
+                sucesso = false;
+            }else {
+                sucesso = salaChat.registrarUsuario(nomeUsuario);
+
+            }
             RegisterResponse resposta = RegisterResponse.newBuilder()
                     .setSuccess(sucesso)
                     .setUsername(nomeUsuario)
                     .build();
             observadorResposta.onNext(resposta);
             observadorResposta.onCompleted();
+
+
         }
 
         @Override
